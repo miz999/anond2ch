@@ -3,7 +3,7 @@ name: Run Anond Crawler
 on:
   schedule:
     # 10分おきに実行
-    - cron: '*/10 * * * *'
+    # - cron: '*/10 * * * *'
   # GitHub画面から手動実行できるようにする設定
   workflow_dispatch:
 
