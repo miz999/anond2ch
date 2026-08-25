@@ -8,7 +8,9 @@ from datetime import datetime
 # 設定
 RSS_URL = "https://anond.hatelabo.jp/rss"
 DB_PATH = "anond.db"
-OUTPUT_DIR = "."  # 必要に応じて "output" 等に変更
+# --- 設定の変更 ---
+# OUTPUT_DIR = "."  # 必要に応じて "output" 等に変更
+OUTPUT_DIR = "dat"   # 「dat」フォルダ内に格納するように変更（名前はお好みでOK）
 
 
 def parse_date(date_str):
@@ -190,6 +192,10 @@ def process_rss(conn):
 
 def export_dat_and_subject(conn):
     """DBの内容から subject.txt および *.dat を UTF-8 で一括生成"""
+    
+    # 【追加】出力先ディレクトリが存在しない場合は自動作成
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
     cursor = conn.cursor()
 
     cursor.execute("""
