@@ -1,0 +1,7 @@
+# 過去の生成物や一時的なファイルをすべて無視する
+gemini-code-*.py
+gemini-code-*.md
+gemini-code-*.txt
+gemini-code-*.sql
+gemini-code-*.yaml
+subject.txt
