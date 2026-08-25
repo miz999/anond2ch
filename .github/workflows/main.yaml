@@ -1,0 +1,39 @@
+name: Run Anond Crawler
+
+on:
+  schedule:
+    # 10分おきに実行
+    - cron: '*/10 * * * *'
+  # GitHub画面から手動実行できるようにする設定
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Python 環境のセットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3. クローラー（main.py）を実行（外部ライブラリ不要）
+      - name: Run crawler script
+        run: python main.py
+
+      # 4. 更新されたデータ（anond.db, subject.txt, *.dat）があればコミット＆プッシュ
+      - name: Commit and push updated data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          # 変更がある場合のみコミット＆プッシュ
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update scraped data [skip ci]" && git push)
